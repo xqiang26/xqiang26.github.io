@@ -1,5 +1,11 @@
-使用border-image实现类似iOS7的1px底边
-=====
+---
+title: 使用border-image实现类似iOS7的1px底边
+date: 2017-05-19 17:22:36
+categories:
+- html
+tags:
+- iOS7
+---
 
 iOS7已经发布有一段时间，扁平化设计风格有很多值得称赞的地方，其中有很多设计细节都是值得研究的。
 

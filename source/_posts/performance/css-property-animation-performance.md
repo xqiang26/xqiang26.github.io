@@ -1,4 +1,11 @@
-# CSS动画属性性能
+---
+title: CSS动画属性性能
+date: 2017-05-19 17:22:36
+categories:
+	performance
+tags:
+	css
+---
 
 * CSS动画属性会触发整个页面的重排relayout、重绘repaint、重组recomposite
 * Paint通常是其中最花费性能的，尽可能避免使用触发paint的CSS动画属性，这也是为什么我们推荐在CSS动画中使用`webkit-transform: translateX(3em)`的方案代替使用`left: 3em`，因为`left`会额外触发layout与paint，而`webkit-transform`只触发整个页面composite
