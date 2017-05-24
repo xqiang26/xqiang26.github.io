@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>大杂烩</title>
+    <link>http://xqiang26.github.io/</link>
+    <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description></description>
+    <pubDate>Fri, 19 May 2017 10:46:10 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>高性能 Mobile Web 开发</title>
+      <link>http://xqiang26.github.io/2017/05/19/performance/README/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/performance/README/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;./high-performance-css3-animation.md&quot;&gt;高性能CSS3动画&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;./css-property-animation-performance.md&quot;&gt;CSS动画属性性能&lt;/
+      
+      </description>
+      
+      <content:encoded><![CDATA[<ol>
+<li><a href="./high-performance-css3-animation.md">高性能CSS3动画</a></li>
+<li><a href="./css-property-animation-performance.md">CSS动画属性性能</a></li>
+</ol>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/performance/README/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>CSS动画属性性能</title>
+      <link>http://xqiang26.github.io/2017/05/19/performance/css-property-animation-performance/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/performance/css-property-animation-performance/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;ul&gt;
+&lt;li&gt;CSS动画属性会触发整个页面的重排relayout、重绘repaint、重组recomposite&lt;/li&gt;
+&lt;li&gt;Paint通常是其中最花费性能的，尽可能避免使用触发paint的CSS动画属性，这也是为什么我们推荐在CSS动画中使用&lt;code&gt;webkit-
+      
+      </description>
+      
+      <content:encoded><![CDATA[<ul>
+<li>CSS动画属性会触发整个页面的重排relayout、重绘repaint、重组recomposite</li>
+<li>Paint通常是其中最花费性能的，尽可能避免使用触发paint的CSS动画属性，这也是为什么我们推荐在CSS动画中使用<code>webkit-transform: translateX(3em)</code>的方案代替使用<code>left: 3em</code>，因为<code>left</code>会额外触发layout与paint，而<code>webkit-transform</code>只触发整个页面composite</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">div</span> &#123;</div><div class="line">  <span class="attribute">-webkit-animation-duration</span>: <span class="number">5s</span>;</div><div class="line">  <span class="attribute">-webkit-animation-name</span>: move;</div><div class="line">  <span class="attribute">-webkit-animation-iteration-count</span>: infinite;</div><div class="line">  <span class="attribute">-webkit-animation-direction</span>: alternate;</div><div class="line">  <span class="attribute">width</span>: <span class="number">200px</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">200px</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">100px</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#808080</span>;</div><div class="line">  <span class="attribute">position</span>: absolute;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@-<span class="keyword">webkit</span>-<span class="keyword">keyframes</span> move&#123;</div><div class="line">	<span class="selector-tag">from</span> &#123;</div><div class="line">		<span class="attribute">left</span>: <span class="number">100px</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="selector-tag">to</span> &#123;</div><div class="line">		<span class="attribute">left</span>: <span class="number">200px</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如下图使用<code>left</code>将持续触发页面重绘，表现为红色边框：</p>
+<p><img src="https://f.cloud.github.com/assets/677114/1755561/a8fb9c94-6666-11e3-8788-ac5b5ef4ef24.gif" alt="move"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@-<span class="keyword">webkit</span>-<span class="keyword">keyframes</span> move&#123;</div><div class="line">	<span class="selector-tag">from</span> &#123;</div><div class="line">		<span class="attribute">-webkit-transform</span>: <span class="built_in">translateX</span>(100px);</div><div class="line">	&#125;</div><div class="line">	<span class="selector-tag">to</span> &#123;</div><div class="line">		<span class="attribute">-webkit-transform</span>: <span class="built_in">translateX</span>(200px);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如下图使用<code>-webkit-transform</code>页面只发生重组，表现为橙色边框：</p>
+<p><img src="https://f.cloud.github.com/assets/677114/1755562/aaef262e-6666-11e3-8e83-3e770f269af0.gif" alt="move2"></p>
+<ul>
+<li>CSS属性在CSS动画中行为表</li>
+</ul>
+<p><img src="https://f.cloud.github.com/assets/677114/1752383/1f8c5e8e-661c-11e3-9725-306f7e5c73f5.png" alt="CSS Property Animation on the Web"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://docs.google.com/presentation/d/1CH8ifryioHDLT1Oryyy8amusUmq2FytpCPCpk0G3E4o/edit#slide=id.p" target="_blank" rel="external">#perfmatters: 60fps layout and rendering</a></li>
+</ul>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/performance/css-property-animation-performance/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>高性能 CSS3 动画</title>
+      <link>http://xqiang26.github.io/2017/05/19/performance/high-performance-css3-animation/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/performance/high-performance-css3-animation/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;p&gt;高性能移动Web相较PC的场景需要考虑的因素也相对更多更复杂，我们总结为以下几点： 流量、功耗与流畅度。&lt;br&gt;在PC时代我们更多的是考虑体验上的流畅度，而在Mobile端本身丰富的场景下，需要额外关注对用户基站网络流量使用的情况，设备耗电量的情况。&lt;/p&gt;
+&lt;p&gt;关于流畅
+      
+      </description>
+      
+      <content:encoded><![CDATA[<p>高性能移动Web相较PC的场景需要考虑的因素也相对更多更复杂，我们总结为以下几点： 流量、功耗与流畅度。<br>在PC时代我们更多的是考虑体验上的流畅度，而在Mobile端本身丰富的场景下，需要额外关注对用户基站网络流量使用的情况，设备耗电量的情况。</p>
+<p>关于流畅度，主要体现在前端动画中，在现有的前端动画体系中，通常有两种模式：JS动画与CSS3动画。<br>JS动画是通过JS动态改写样式实现动画能力的一种方案，在PC端兼容低端浏览器中不失为一种推荐方案。<br>而在移动端，我们选择性能更优浏览器原生实现方案：CSS3动画。</p>
+<p>然而，CSS3动画在移动多终端设备场景下，相比PC会面对更多的性能问题，主要体现在动画的卡顿与闪烁。</p>
+<p>目前对提升移动端CSS3动画体验的主要方法有几点：</p>
+<h3 id="尽可能多的利用硬件能力，如使用3D变形来开启GPU加速"><a href="#尽可能多的利用硬件能力，如使用3D变形来开启GPU加速" class="headerlink" title="尽可能多的利用硬件能力，如使用3D变形来开启GPU加速"></a>尽可能多的利用硬件能力，如使用3D变形来开启GPU加速</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">-webkit-transform</span>: <span class="selector-tag">translate3d</span>(0, 0, 0);</div><div class="line"><span class="selector-tag">-moz-transform</span>: <span class="selector-tag">translate3d</span>(0, 0, 0);</div><div class="line"><span class="selector-tag">-ms-transform</span>: <span class="selector-tag">translate3d</span>(0, 0, 0);</div><div class="line"><span class="selector-tag">transform</span>: <span class="selector-tag">translate3d</span>(0, 0, 0);</div></pre></td></tr></table></figure>
+<p>如动画过程有闪烁（通常发生在动画开始的时候），可以尝试下面的Hack：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">-webkit-backface-visibility</span>: <span class="selector-tag">hidden</span>;</div><div class="line"><span class="selector-tag">-moz-backface-visibility</span>: <span class="selector-tag">hidden</span>;</div><div class="line"><span class="selector-tag">-ms-backface-visibility</span>: <span class="selector-tag">hidden</span>;</div><div class="line"><span class="selector-tag">backface-visibility</span>: <span class="selector-tag">hidden</span>;</div><div class="line"></div><div class="line"><span class="selector-tag">-webkit-perspective</span>: 1000;</div><div class="line"><span class="selector-tag">-moz-perspective</span>: 1000;</div><div class="line"><span class="selector-tag">-ms-perspective</span>: 1000;</div><div class="line"><span class="selector-tag">perspective</span>: 1000;</div></pre></td></tr></table></figure>
+<p>如下面一个元素通过<code>translate3d</code>右移<code>500px</code>的动画流畅度会明显优于使用<code>left</code>属性：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="selector-id">#ball-1</span> &#123;</div><div class="line">  <span class="attribute">transition</span>: -webkit-transform .<span class="number">5s</span> ease;</div><div class="line">  <span class="attribute">-webkit-transform</span>: <span class="built_in">translate3d</span>(0, 0, 0);</div><div class="line">&#125;</div><div class="line"><span class="selector-id">#ball-1</span><span class="selector-class">.slidein</span> &#123;</div><div class="line">  <span class="attribute">-webkit-transform</span>: <span class="built_in">translate3d</span>(500px, 0, 0);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="selector-id">#ball-2</span> &#123;</div><div class="line">  <span class="attribute">transition</span>: left .<span class="number">5s</span> ease;</div><div class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-id">#ball-2</span><span class="selector-class">.slidein</span> &#123;</div><div class="line">  <span class="attribute">left</span>: <span class="number">500px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注：3D变形会消耗更多的内存与功耗，应确实有性能问题时才去使用它，兼在权衡</p>
+<h3 id="尽可能少的使用box-shadows与gradients"><a href="#尽可能少的使用box-shadows与gradients" class="headerlink" title="尽可能少的使用box-shadows与gradients"></a>尽可能少的使用<code>box-shadows</code>与<code>gradients</code></h3><p><code>box-shadows</code>与<code>gradients</code>往往都是页面的性能杀手，尤其是在一个元素同时都使用了它们，所以拥抱扁平化设计吧。</p>
+<h3 id="尽可能的让动画元素不在文档流中，以减少重排"><a href="#尽可能的让动画元素不在文档流中，以减少重排" class="headerlink" title="尽可能的让动画元素不在文档流中，以减少重排"></a>尽可能的让动画元素不在文档流中，以减少重排</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">position: fixed;</div><div class="line">position: absolute;</div></pre></td></tr></table></figure>
+<h3 id="优化-DOM-layout-性能"><a href="#优化-DOM-layout-性能" class="headerlink" title="优化 DOM layout 性能"></a>优化 DOM layout 性能</h3><p>我们从实例开始描述这个主题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var newWidth = aDiv.offsetWidth + 10;</div><div class="line">aDiv.style.width = newWidth + &apos;px&apos;;</div><div class="line">var newHeight = aDiv.offsetHeight + 10;</div><div class="line">aDiv.style.height = newHeight + &apos;px&apos;;</div><div class="line"></div><div class="line">var newWidth = aDiv.offsetWidth + 10;</div><div class="line">var newHeight = aDiv.offsetHeight + 10;</div><div class="line">aDiv.style.width = newWidth + &apos;px&apos;;</div><div class="line">aDiv.style.height = newHeight + &apos;px&apos;;</div></pre></td></tr></table></figure>
+<p>这是两段能力上完全等同的代码，显式的差异正如我们所见，只有执行顺序的区别。但真是如此吗？下面是加了说明注释的代码版本，很好的阐述了其中的进一步差异：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 触发两次 layout</span></div><div class="line"><span class="keyword">var</span> newWidth = aDiv.offsetWidth + <span class="number">10</span>;   <span class="comment">// Read</span></div><div class="line">aDiv.style.width = newWidth + <span class="string">'px'</span>;     <span class="comment">// Write</span></div><div class="line"><span class="keyword">var</span> newHeight = aDiv.offsetHeight + <span class="number">10</span>; <span class="comment">// Read</span></div><div class="line">aDiv.style.height = newHeight + <span class="string">'px'</span>;   <span class="comment">// Write</span></div><div class="line"></div><div class="line"><span class="comment">// 只触发一次 layout</span></div><div class="line"><span class="keyword">var</span> newWidth = aDiv.offsetWidth + <span class="number">10</span>;   <span class="comment">// Read</span></div><div class="line"><span class="keyword">var</span> newHeight = aDiv.offsetHeight + <span class="number">10</span>; <span class="comment">// Read</span></div><div class="line">aDiv.style.width = newWidth + <span class="string">'px'</span>;     <span class="comment">// Write</span></div><div class="line">aDiv.style.height = newHeight + <span class="string">'px'</span>;   <span class="comment">// Write</span></div></pre></td></tr></table></figure>
+<p>从注释中可找到规律，连续的读取offsetWidth/Height属性与连续的设置width/height属性，相比分别读取设置单个属性可少触发一次layout。</p>
+<p>从结论看似乎与执行队列有关，没错，这是浏览器的优化策略。所有可触发layout的操作都会被暂时放入 <code>layout-queue</code> 中，等到必须更新的时候，再计算整个队列中所有操作影响的结果，如此就可只进行一次的layout，从而提升性能。</p>
+<p>关键一，可触发<code>layout</code>的操作，哪些操作下会layout的更新（也称为<code>reflow</code>或者<code>relayout</code>）？</p>
+<p>我们从浏览器的源码实现入手，以开源<a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/" target="_blank" rel="external">Webkit/Blink</a>为例，<br>对layout的更新，Webkit 主要通过 <a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/Document.cpp&amp;q=updateLayout%20package:%5Echromium$%20file:%5Esrc/third_party/WebKit/Source/core/&amp;dr=CSs&amp;l=1715" target="_blank" rel="external">Document::updateLayout</a><br>与 <a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/Document.cpp&amp;q=updateLayout%20package:%5Echromium$%20file:%5Esrc/third_party/WebKit/Source/core/&amp;dr=CSs&amp;l=1750" target="_blank" rel="external">Document::updateLayoutIgnorePendingStylesheets</a><br>两个方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Document::updateLayout()</div><div class="line">&#123;</div><div class="line">    ASSERT(isMainThread());</div><div class="line"></div><div class="line">    FrameView* frameView = view();</div><div class="line">    <span class="keyword">if</span> (frameView &amp;&amp; frameView-&gt;isInLayout()) &#123;</div><div class="line">        ASSERT_NOT_REACHED();</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (Element* oe = ownerElement())</div><div class="line">        oe-&gt;document()-&gt;updateLayout();</div><div class="line"></div><div class="line">    updateStyleIfNeeded();</div><div class="line"></div><div class="line">    StackStats::LayoutCheckPoint layoutCheckPoint;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (frameView &amp;&amp; renderer() &amp;&amp; (frameView-&gt;layoutPending() || renderer()-&gt;needsLayout()))</div><div class="line">        frameView-&gt;layout();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (m_focusedNode &amp;&amp; !m_didPostCheckFocusedNodeTask) &#123;</div><div class="line">        postTask(CheckFocusedNodeTask::create());</div><div class="line">        m_didPostCheckFocusedNodeTask = <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">void</span> Document::updateLayoutIgnorePendingStylesheets()</div><div class="line">&#123;</div><div class="line">    <span class="keyword">bool</span> oldIgnore = m_ignorePendingStylesheets;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!haveStylesheetsLoaded()) &#123;</div><div class="line">        m_ignorePendingStylesheets = <span class="literal">true</span>;</div><div class="line"></div><div class="line">        HTMLElement* bodyElement = body();</div><div class="line">        <span class="keyword">if</span> (bodyElement &amp;&amp; !bodyElement-&gt;renderer() &amp;&amp; m_pendingSheetLayout == NoLayoutWithPendingSheets) &#123;</div><div class="line">            m_pendingSheetLayout = DidLayoutWithPendingSheets;</div><div class="line">            styleResolverChanged(RecalcStyleImmediately);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (m_hasNodesWithPlaceholderStyle)</div><div class="line">            recalcStyle(Force);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    updateLayout();</div><div class="line"></div><div class="line">    m_ignorePendingStylesheets = oldIgnore;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从 <code>updateLayoutIgnorePendingStylesheets</code> 方法的内部实现可知，其也是对 <code>updateLayout</code> 方法的扩展，并且在现有的 layout 更新模式中，大部分场景都是调用 updateLayoutIgnorePendingStylesheets 来进行layout的更新。</p>
+<p>搜索 Webkit 实现中调用 <a href="https://code.google.com/p/chromium/codesearch#search/&amp;q=updateLayoutIgnorePendingStylesheets&amp;sq=package:chromium&amp;type=cs" target="_blank" rel="external">updateLayoutIgnorePendingStylesheets</a> 方法的代码,<br>得到以下可导致触发 layout 的操作：</p>
+<ul>
+<li><p><code>Element</code>:<br>clientHeight, clientLeft, clientTop, clientWidth, focus(), getBoundingClientRect(), getClientRects(), innerText, offsetHeight, offsetLeft, offsetParent, offsetTop, offsetWidth, outerText, scrollByLines(), scrollByPages(), scrollHeight, scrollIntoView(), scrollIntoViewIfNeeded(), scrollLeft, scrollTop, scrollWidth</p>
+</li>
+<li><p><code>Frame, HTMLImageElement</code>:<br>height, width</p>
+</li>
+<li><p><code>Range</code>:<br>getBoundingClientRect(), getClientRects()</p>
+</li>
+<li><p><code>SVGLocatable</code>:<br>computeCTM(), getBBox()</p>
+</li>
+<li><p><code>SVGTextContent</code>:<br>getCharNumAtPosition(), getComputedTextLength(), getEndPositionOfChar(), getExtentOfChar(), getNumberOfChars(), getRotationOfChar(), getStartPositionOfChar(), getSubStringLength(), selectSubString()</p>
+</li>
+<li><p><code>SVGUse</code>:<br>instanceRoot</p>
+</li>
+<li><p><code>window</code>:<br>getComputedStyle(), scrollBy(), scrollTo(), scrollX, scrollY, webkitConvertPointFromNodeToPage(), webkitConvertPointFromPageToNode()</p>
+</li>
+</ul>
+<p>进一步深入Layout，那上文中必须更新的必要条件是什么？<br>在 Stoyan Stefanov 的 <a href="http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/" target="_blank" rel="external">Rendering: repaint, reflow/relayout, restyle</a> 一文中已做比较详细的解答，可移步了解~</p>
+<h3 id="相关阅读"><a href="#相关阅读" class="headerlink" title="相关阅读"></a>相关阅读</h3><ul>
+<li><a href="http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/" target="_blank" rel="external">Rendering: repaint, reflow/relayout, restyle</a></li>
+<li><a href="http://gent.ilcore.com/2011/03/how-not-to-trigger-layout-in-webkit.html" target="_blank" rel="external">How (not) to trigger a layout in WebKit</a></li>
+</ul>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/performance/high-performance-css3-animation/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>模拟原生效果实践</title>
+      <link>http://xqiang26.github.io/2017/05/19/solutions/README/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/solutions/README/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;./border-1px.md&quot;&gt;使用border-image实现类似物理1像素&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;[ios] &lt;a href=&quot;https://gist.github.com/tfausak/2222823&quot; target=&quot;_bla
+      
+      </description>
+      
+      <content:encoded><![CDATA[<ol>
+<li><a href="./border-1px.md">使用border-image实现类似物理1像素</a></li>
+<li>[ios] <a href="https://gist.github.com/tfausak/2222823" target="_blank" rel="external">Web App Icon与启动图片实践(1)</a></li>
+<li>[ios] <a href="http://mobile.51cto.com/web-395063.htm" target="_blank" rel="external">Web App Icon与启动图片实践(2)</a></li>
+</ol>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/solutions/README/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>使用border-image实现类似iOS7的1px底边</title>
+      <link>http://xqiang26.github.io/2017/05/19/solutions/border-1px/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/solutions/border-1px/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;p&gt;iOS7已经发布有一段时间，扁平化设计风格有很多值得称赞的地方，其中有很多设计细节都是值得研究的。&lt;/p&gt;
+&lt;p&gt;首先，来看下面iOS设置的截图中的border：&lt;/p&gt;
+&lt;p&gt;&lt;img width=&quot;320&quot; src=&quot;http://maxzhang.github.com
+      
+      </description>
+      
+      <content:encoded><![CDATA[<p>iOS7已经发布有一段时间，扁平化设计风格有很多值得称赞的地方，其中有很多设计细节都是值得研究的。</p>
+<p>首先，来看下面iOS设置的截图中的border：</p>
+<p><img width="320" src="http://maxzhang.github.com/articles/images/ios7_settings.png"></p>
+<p>从上面的截图可以看到iOS7的设计是非常精细的，border是一根非常细的线。这篇文章将说明如何使用border-image实现iOS7的border效果。</p>
+<p>在看下面的内容之前，需要先了解devicePixelRatio和border-image，不熟悉的同学请自行脑补：</p>
+<ul>
+<li><a href="http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/" target="_blank" rel="external">设备像素比devicePixelRatio简单介绍</a></li>
+<li><a href="http://www.zhangxinxu.com/wordpress/?p=518" target="_blank" rel="external">CSS3 border-image详解、应用及jQuery插件</a></li>
+</ul>
+<h3 id="border属性实现效果"><a href="#border属性实现效果" class="headerlink" title="border属性实现效果"></a><code>border</code>属性实现效果</h3><p>我们在实现border时通常都是使用<code>border</code>属性，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.border-1px &#123;</div><div class="line">    border-width: 1px 0;</div><div class="line">    border-style: solid;</div><div class="line">    border-color: #333;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>显示效果对比：</p>
+<p><img src="http://maxzhang.github.com/articles/images/border_compare.png" alt="border对比效果"></p>
+<p>上面这张图片可以看到，在手机上<code>border</code>无法达到我们想要的效果。这是因为devicePixelRatio特性导致，iPhone的devicePixelRatio==2，而<code>border-width: 1px</code>描述的是设备独立像素，所以，border被放大到物理像素2px显示，在iPhone上就显得较粗。</p>
+<h3 id="使用border-image属性实现物理1px"><a href="#使用border-image属性实现物理1px" class="headerlink" title="使用border-image属性实现物理1px"></a>使用<code>border-image</code>属性实现物理1px</h3><p>通常手机端的页面设计稿都是放大一倍的，如：为适应iphone retina，设计稿会设计成640*960的分辨率，图片按照2倍大小切出来，在手机端看着就不会虚化，非常清晰。</p>
+<p>同样，在使用<code>border-image</code>时，将border设计为物理1px，如下：</p>
+<p><img src="https://raw.github.com/maxzhang/maxzhang.github.com/master/articles/images/border_zoom.png" alt="border image 放大"></p>
+<p>样式设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.border-image-1px &#123;</div><div class="line">    border-width: 1px 0px;</div><div class="line">    -webkit-border-image: url(&quot;border.png&quot;) 2 0 stretch;</div><div class="line">    border-image: url(&quot;border.png&quot;) 2 0 stretch;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>显示效果对比：</p>
+<p><img src="http://maxzhang.github.com/articles/images/border_image_compare.png" alt="border image 对比效果"></p>
+<p>这里在手机上的效果和iOS7已经非常接近了。</p>
+<p>样例：<a href="http://maxzhang.github.com/examples/border1px/index.html" target="_blank" rel="external">http://maxzhang.github.com/examples/border1px/index.html</a></p>
+<p><strong>Note: border.png也可以直接使用的base64替代</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">.border-image-1px &#123;</div><div class="line">    border-width: 1px 0px;</div><div class="line">    -webkit-border-image: url(&quot;data:image/png;base64,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&quot;) 2 0 stretch;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/solutions/border-1px/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>字体设置</title>
+      <link>http://xqiang26.github.io/2017/05/19/solutions/font-family/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/solutions/font-family/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;
+      
+      </description>
+      
+      <content:encoded><![CDATA[<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">body</span> &#123;</div><div class="line">    <span class="attribute">font-family</span>: <span class="string">"Helvetica Neue"</span>, Helvetica, STHeiTi, sans-serif;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>iOS 4.0+ 使用英文字体 Helvetica Neue，之前的iOS版本降级使用 Helvetica。</p>
+<p>中文字体设置为华文黑体STHeiTi。</p>
+<p>需补充说明，华文黑体并不存在iOS的字体库中(<a href="http://support.apple.com/kb/HT5484?viewlocale=en_US)，" target="_blank" rel="external">http://support.apple.com/kb/HT5484?viewlocale=en_US)，</a><br>但系统会自动将华文黑体STHeiTi兼容命中系统默认中文字体黑体-简或黑体-繁：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Heiti SC Light 黑体-简 细体</div><div class="line">Heiti SC Medium 黑体-简 中黑</div><div class="line">Heiti TC Light 黑体-繁 细体</div><div class="line">Heiti TC Medium 黑体-繁 中黑</div></pre></td></tr></table></figure>
+<p>原生Android下中文字体与英文字体都选择默认的无衬线字体。</p>
+<p>4.0之前版本英文字体原生Android使用的是Droid Sans，中文字体原生Android会命中Droid Sans Fallback。</p>
+<p>4.0+ 中英文字体都会使用原生Android新的Roboto字体。</p>
+<p>其他第三方Android系统也一致选择默认的无衬线字体。</p>
+<h2 id="参考阅读"><a href="#参考阅读" class="headerlink" title="参考阅读"></a>参考阅读</h2><ul>
+<li><a href="http://en.wikipedia.org/wiki/Droid_fonts" target="_blank" rel="external">Droid, the default font for older versions of Android</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Roboto" target="_blank" rel="external">Roboto, the default font for newer versions of Android</a></li>
+</ul>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/solutions/font-family/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>代码结构规范</title>
+      <link>http://xqiang26.github.io/2017/05/19/solutions/project-structure/</link>
+      <guid>http://xqiang26.github.io/2017/05/19/solutions/project-structure/</guid>
+      <pubDate>Fri, 19 May 2017 09:22:36 GMT</pubDate>
+      <description>
+      
+        &lt;p&gt;使用 &lt;a href=&quot;http://html5boilerplate.com/mobile/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Mobile Boilerplate&lt;/a&gt;&lt;/p&gt;
+
+      
+      </description>
+      
+      <content:encoded><![CDATA[<p>使用 <a href="http://html5boilerplate.com/mobile/" target="_blank" rel="external">Mobile Boilerplate</a></p>
+]]></content:encoded>
+      
+      <comments>http://xqiang26.github.io/2017/05/19/solutions/project-structure/#disqus_thread</comments>
+    </item>
+    
+  </channel>
+</rss>
